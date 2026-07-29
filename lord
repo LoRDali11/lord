@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoRD Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkPurple: '#1a0b2e',
+                        lightPurple: '#2d1b4e',
+                        accentGold: '#d4af37',
+                        goldHover: '#f1c40f'
+                    },
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                        logo: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a0b2e; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f1c40f; 
+        }
+        
+        .glass-panel {
+            background: rgba(45, 27, 78, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        body {
+            background-color: #1a0b2e;
+            background-image: radial-gradient(circle at top right, #2d1b4e 0%, #1a0b2e 50%);
+            min-height: 100vh;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col">
+
+    <header class="glass-panel sticky top-0 z-40 shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap text-accentGold text-3xl"></i>
+                <h1 class="font-logo text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-accentGold to-yellow-200 tracking-wider uppercase drop-shadow-md">
+                    LoRD Academy
+                </h1>
+            </div>
+            <div id="header-actions">
+                <button id="btn-back-home" class="hidden text-gray-300 hover:text-accentGold transition-colors font-semibold">
+                    <i class="fa-solid fa-arrow-right ml-2"></i> العودة للرئيسية
+                </button>
+                <button id="btn-logout" class="hidden bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors shadow-lg">
+                    تسجيل الخروج <i class="fa-solid fa-sign-out-alt mr-2"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        
+        <!-- 1. Student View (Public) -->
+        <div id="student-view" class="space-y-8">
+            <div class="text-center space-y-4 mb-12">
+                <h2 class="text-2xl md:text-4xl font-bold text-white">مرحباً بك في منصتك التعليمية</h2>
+                <p class="text-gray-400">تصفح المجلدات أدناه للوصول إلى المواد الدراسية والملفات</p>
+            </div>
+            
+            <!-- Folders Grid -->
+            <div id="student-folders-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- Materials List (Inside a folder) -->
+            <div id="student-materials-view" class="hidden space-y-6">
+                <div class="flex items-center justify-between glass-panel p-4 rounded-xl">
+                    <h3 id="current-folder-title" class="text-2xl font-bold text-accentGold">اسم المجلد</h3>
+                    <button onclick="showStudentFolders()" class="text-gray-300 hover:text-white bg-lightPurple px-4 py-2 rounded-lg transition-colors">
+                        رجوع للمجلدات
+                    </button>
+                </div>
+                <div id="student-materials-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Admin View (Secret) -->
+        <div id="admin-view" class="hidden space-y-8">
+            <div class="flex items-center justify-between">
+                <h2 class="text-3xl font-bold text-accentGold border-r-4 border-accentGold pr-4">لوحة تحكم الإدارة</h2>
+            </div>
+
+            <!-- Manage Folders Section -->
+            <div class="glass-panel p-6 rounded-2xl shadow-xl">
+                <h3 class="text-xl font-bold mb-4 flex items-center"><i class="fa-solid fa-folder-plus ml-2 text-accentGold"></i> إدارة المجلدات</h3>
+                <form id="form-add-folder" class="flex gap-4 mb-6">
+                    <input type="text" id="input-folder-name" placeholder="اسم المجلد الجديد..." required
+                           class="flex-grow bg-[#1a0b2e] border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-accentGold focus:ring-1 focus:ring-accentGold transition-all">
+                    <button type="submit" class="bg-accentGold hover:bg-goldHover text-darkPurple font-bold px-6 py-2 rounded-lg shadow-lg transition-colors">
+                        إضافة
+                    </button>
+                </form>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right">
+                        <thead>
+                            <tr class="border-b border-gray-700 text-gray-400">
+                                <th class="pb-3 pr-2">اسم المجلد</th>
+                                <th class="pb-3">عدد المواد</th>
+                                <th class="pb-3 text-left pl-2">إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-folders-list" class="divide-y divide-gray-700">
+                            <!-- Injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Manage Materials Section -->
+            <div id="admin-materials-section" class="hidden glass-panel p-6 rounded-2xl shadow-xl border border-accentGold">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold flex items-center">
+                        <i class="fa-solid fa-file-pdf ml-2 text-red-400"></i>
+                        إدارة المواد: <span id="admin-current-folder-name" class="mr-2 text-accentGold"></span>
+                    </h3>
+                    <button onclick="closeAdminMaterials()" class="text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <form id="form-add-material" class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+                    <input type="text" id="input-material-title" placeholder="عنوان المادة (مثال: المحاضرة الأولى)" required
+                           class="md:col-span-2 bg-[#1a0b2e] border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-accentGold focus:ring-1 focus:ring-accentGold">
+                    <input type="url" id="input-material-url" placeholder="رابط Google Drive للملف (PDF)" required
+                           class="md:col-span-2 bg-[#1a0b2e] border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-accentGold focus:ring-1 focus:ring-accentGold">
+                    <button type="submit" class="bg-accentGold hover:bg-goldHover text-darkPurple font-bold px-4 py-2 rounded-lg shadow-lg transition-colors">
+                        إضافة ملف
+                    </button>
+                </form>
+
+                <div class="space-y-3" id="admin-materials-list">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    
+    <!-- Secret Footer trigger -->
+    <footer class="mt-auto py-6 border-t border-gray-800 text-center text-sm text-gray-500 relative">
+        <p>&copy; 2026 LoRD Academy. جميع الحقوق محفوظة.</p>
+        <!-- Secret Admin Login Trigger -->
+        <button onclick="openLoginModal()" class="absolute bottom-6 left-6 opacity-10 hover:opacity-100 transition-opacity p-2" title="Admin Area">
+            <i class="fa-solid fa-lock text-xs"></i>
+        </button>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="glass-panel p-8 rounded-2xl w-full max-w-sm shadow-2xl transform transition-all">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-accentGold">تسجيل الدخول للإدارة</h3>
+                <button onclick="closeLoginModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <form id="form-login" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-gray-300">كلمة المرور</label>
+                    <input type="password" id="input-password" class="w-full bg-[#1a0b2e] border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accentGold focus:ring-1 focus:ring-accentGold" placeholder="أدخل كلمة المرور...">
+                </div>
+                <p id="login-error" class="text-red-400 text-sm hidden">كلمة المرور غير صحيحة.</p>
+                <button type="submit" class="w-full bg-accentGold hover:bg-goldHover text-darkPurple font-bold py-3 rounded-lg transition-colors shadow-lg mt-4">
+                    دخول
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PDF Viewer Modal -->
+    <div id="pdf-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden flex-col z-50">
+        <div class="flex justify-between items-center p-4 glass-panel border-b-0">
+            <h3 id="pdf-modal-title" class="text-xl font-bold text-accentGold">عرض الملف</h3>
+            <div class="flex gap-4">
+                <a id="pdf-external-link" href="#" target="_blank" class="text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-2">
+                    فتح في نافذة جديدة <i class="fa-solid fa-external-link-alt"></i>
+                </a>
+                <button onclick="closePDFModal()" class="text-white hover:text-red-400 transition-colors">
+                    <i class="fa-solid fa-times text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <div class="flex-grow w-full relative">
+            <div id="pdf-loader" class="absolute inset-0 flex items-center justify-center">
+                <i class="fa-solid fa-spinner fa-spin text-accentGold text-4xl"></i>
+            </div>
+            <iframe id="pdf-iframe" src="" class="w-full h-full border-none relative z-10" onload="document.getElementById('pdf-loader').style.display='none'"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Data Structure & State
+        let academyData = [];
+        let currentAdminFolderId = null;
+        let currentStudentFolderId = null;
+        const ADMIN_PASSWORD = "admin"; // Hardcoded for demo purposes
+
+        // Dummy Data for Initialization
+        const defaultData = [
+            {
+                id: Date.now(),
+                name: "المرحلة الثانوية - فيزياء",
+                materials: [
+                    {
+                        id: 101,
+                        title: "الفصل الأول: الحركة الكهربائية (ملف تجريبي)",
+                        url: "https://drive.google.com/file/d/18cpd_3kqi6SPsIVMKklmd3EGgE_sDFFC/view?usp=sharing"
+                    }
+                ]
+            },
+            {
+                id: Date.now() + 1,
+                name: "المرحلة الثانوية - رياضيات",
+                materials: []
+            }
+        ];
+
+        // Initialize App
+        function init() {
+            // Load from LocalStorage
+            const stored = localStorage.getItem('lordAcademyData');
+            if (stored) {
+                try {
+                    academyData = JSON.parse(stored);
+                } catch (e) {
+                    academyData = defaultData;
+                }
+            } else {
+                academyData = defaultData;
+                saveData();
+            }
+
+            // Check if admin is logged in (session storage)
+            if (sessionStorage.getItem('isAdmin') === 'true') {
+                showAdminView();
+            } else {
+                showStudentView();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('lordAcademyData', JSON.stringify(academyData));
+        }
+
+        /* --- Views Management --- */
+        function showStudentView() {
+            document.getElementById('admin-view').classList.add('hidden');
+            document.getElementById('student-view').classList.remove('hidden');
+            document.getElementById('btn-logout').classList.add('hidden');
+            document.getElementById('btn-back-home').classList.add('hidden');
+            showStudentFolders();
+        }
+
+        function showAdminView() {
+            document.getElementById('student-view').classList.add('hidden');
+            document.getElementById('admin-view').classList.remove('hidden');
+            document.getElementById('btn-logout').classList.remove('hidden');
+            document.getElementById('btn-back-home').classList.remove('hidden');
+            renderAdminFolders();
+        }
+
+        /* --- Student Logic --- */
+        function showStudentFolders() {
+            document.getElementById('student-materials-view').classList.add('hidden');
+            const grid = document.getElementById('student-folders-grid');
+            grid.classList.remove('hidden');
+            grid.innerHTML = '';
+
+            if (academyData.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center text-gray-400 py-12">لا توجد مجلدات متاحة حالياً.</div>';
+                return;
+            }
+
+            academyData.forEach(folder => {
+                const matCount = folder.materials.length;
+                const card = document.createElement('div');
+                card.className = 'glass-panel p-6 rounded-2xl cursor-pointer transform transition-all hover:-translate-y-1 hover:shadow-2xl hover:border-accentGold group border border-gray-700';
+                card.onclick = () => openStudentFolder(folder.id);
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 rounded-full bg-lightPurple flex items-center justify-center text-accentGold group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-folder-open text-xl"></i>
+                        </div>
+                        <span class="text-xs font-semibold px-3 py-1 bg-gray-800 rounded-full text-gray-300">
+                            ${matCount} ملفات
+                        </span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-accentGold transition-colors">${folder.name}</h3>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openStudentFolder(folderId) {
+            const folder = academyData.find(f => f.id === folderId);
+            if (!folder) return;
+
+            document.getElementById('student-folders-grid').classList.add('hidden');
+            document.getElementById('student-materials-view').classList.remove('hidden');
+            document.getElementById('current-folder-title').textContent = folder.name;
+            
+            const list = document.getElementById('student-materials-list');
+            list.innerHTML = '';
+
+            if (folder.materials.length === 0) {
+                list.innerHTML = '<div class="col-span-full text-center text-gray-400 py-8 bg-lightPurple/30 rounded-xl">لا توجد ملفات في هذا المجلد.</div>';
+                return;
+            }
+
+            folder.materials.forEach(mat => {
+                const item = document.createElement('div');
+                item.className = 'glass-panel p-4 rounded-xl flex justify-between items-center hover:border-accentGold transition-colors cursor-pointer group';
+                item.onclick = () => openPDFModal(mat.title, mat.url);
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <i class="fa-regular fa-file-pdf text-red-400 text-2xl group-hover:scale-110 transition-transform"></i>
+                        <span class="font-semibold text-white group-hover:text-accentGold transition-colors">${mat.title}</span>
+                    </div>
+                    <i class="fa-solid fa-play text-gray-500 group-hover:text-accentGold transition-colors"></i>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+
+        /* --- Admin Logic --- */
+        function renderAdminFolders() {
+            const tbody = document.getElementById('admin-folders-list');
+            tbody.innerHTML = '';
+
+            academyData.forEach(folder => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-lightPurple/50 transition-colors';
+                tr.innerHTML = `
+                    <td class="py-4 pr-2 font-semibold text-white">${folder.name}</td>
+                    <td class="py-4 text-gray-400">${folder.materials.length}</td>
+                    <td class="py-4 pl-2 text-left">
+                        <button onclick="openAdminFolder(${folder.id})" class="text-blue-400 hover:text-blue-300 mx-2 p-2" title="إدارة الملفات">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </button>
+                        <button onclick="deleteFolder(${folder.id})" class="text-red-500 hover:text-red-400 p-2" title="حذف المجلد">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.getElementById('form-add-folder').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('input-folder-name');
+            const name = input.value.trim();
+            if (name) {
+                academyData.push({ id: Date.now(), name, materials: [] });
+                saveData();
+                renderAdminFolders();
+                input.value = '';
+                showStudentFolders(); // Refresh background data
+            }
+        });
+
+        function deleteFolder(id) {
+            if(confirm('هل أنت متأكد من حذف هذا المجلد وجميع محتوياته؟')) {
+                academyData = academyData.filter(f => f.id !== id);
+                if (currentAdminFolderId === id) closeAdminMaterials();
+                saveData();
+                renderAdminFolders();
+                showStudentFolders();
+            }
+        }
+
+        function openAdminFolder(id) {
+            currentAdminFolderId = id;
+            const folder = academyData.find(f => f.id === id);
+            if(!folder) return;
+
+            document.getElementById('admin-materials-section').classList.remove('hidden');
+            document.getElementById('admin-current-folder-name').textContent = folder.name;
+            renderAdminMaterials();
+        }
+
+        function closeAdminMaterials() {
+            currentAdminFolderId = null;
+            document.getElementById('admin-materials-section').classList.add('hidden');
+        }
+
+        function renderAdminMaterials() {
+            if(!currentAdminFolderId) return;
+            const folder = academyData.find(f => f.id === currentAdminFolderId);
+            const list = document.getElementById('admin-materials-list');
+            list.innerHTML = '';
+
+            if (folder.materials.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 text-center py-4">لا يوجد ملفات، قم بإضافة رابط Google Drive بالأعلى.</p>';
+                return;
+            }
+
+            folder.materials.forEach(mat => {
+                const item = document.createElement('div');
+                item.className = 'flex justify-between items-center bg-[#1a0b2e] border border-gray-700 p-3 rounded-lg';
+                item.innerHTML = `
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <i class="fa-solid fa-file-pdf text-red-400"></i>
+                        <span class="font-semibold text-white truncate max-w-xs md:max-w-md">${mat.title}</span>
+                    </div>
+                    <button onclick="deleteMaterial(${mat.id})" class="text-red-500 hover:bg-red-500/20 p-2 rounded transition-colors">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        document.getElementById('form-add-material').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if(!currentAdminFolderId) return;
+
+            const title = document.getElementById('input-material-title').value.trim();
+            const url = document.getElementById('input-material-url').value.trim();
+            const folderIndex = academyData.findIndex(f => f.id === currentAdminFolderId);
+
+            if(title && url && folderIndex !== -1) {
+                academyData[folderIndex].materials.push({
+                    id: Date.now(),
+                    title,
+                    url
+                });
+                saveData();
+                renderAdminFolders(); // update count
+                renderAdminMaterials();
+                
+                document.getElementById('input-material-title').value = '';
+                document.getElementById('input-material-url').value = '';
+            }
+        });
+
+        function deleteMaterial(matId) {
+            if(!currentAdminFolderId) return;
+            if(confirm('هل أنت متأكد من حذف هذا الملف؟')) {
+                const folderIndex = academyData.findIndex(f => f.id === currentAdminFolderId);
+                academyData[folderIndex].materials = academyData[folderIndex].materials.filter(m => m.id !== matId);
+                saveData();
+                renderAdminFolders();
+                renderAdminMaterials();
+            }
+        }
+
+        /* --- PDF Google Drive Extraction --- */
+        function getDriveEmbedUrl(url) {
+            // Extracts the file ID from a standard Google Drive URL and converts it to a preview URL
+            // Matches formats like: https://drive.google.com/file/d/ID/view, https://drive.google.com/open?id=ID
+            let fileId = "";
+            const matchD = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            const matchId = url.match(/id=([a-zA-Z0-9_-]+)/);
+            
+            if (matchD) fileId = matchD[1];
+            else if (matchId) fileId = matchId[1];
+
+            if (fileId) {
+                return `https://drive.google.com/file/d/${fileId}/preview`;
+            }
+            // Fallback if regex fails, return original and hope it works (unlikely for embeds but safe)
+            return url;
+        }
+
+        function openPDFModal(title, url) {
+            const embedUrl = getDriveEmbedUrl(url);
+            document.getElementById('pdf-modal-title').textContent = title;
+            document.getElementById('pdf-external-link').href = url;
+            document.getElementById('pdf-loader').style.display = 'flex';
+            document.getElementById('pdf-iframe').src = embedUrl;
+            document.getElementById('pdf-modal').classList.remove('hidden');
+            document.getElementById('pdf-modal').classList.add('flex');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closePDFModal() {
+            document.getElementById('pdf-modal').classList.add('hidden');
+            document.getElementById('pdf-modal').classList.remove('flex');
+            document.getElementById('pdf-iframe').src = ''; // Stop loading/playing
+            document.body.style.overflow = 'auto';
+        }
+
+        /* --- Login & Auth Logic --- */
+        function openLoginModal() {
+            if(sessionStorage.getItem('isAdmin') === 'true') {
+                showAdminView();
+            } else {
+                document.getElementById('login-modal').classList.remove('hidden');
+                document.getElementById('login-modal').classList.add('flex');
+                document.getElementById('input-password').focus();
+            }
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('login-modal').classList.remove('flex');
+            document.getElementById('input-password').value = '';
+            document.getElementById('login-error').classList.add('hidden');
+        }
+
+        document.getElementById('form-login').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const pass = document.getElementById('input-password').value;
+            if(pass === ADMIN_PASSWORD) {
+                sessionStorage.setItem('isAdmin', 'true');
+                closeLoginModal();
+                showAdminView();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            sessionStorage.removeItem('isAdmin');
+            showStudentView();
+        });
+
+        document.getElementById('btn-back-home').addEventListener('click', () => {
+            showStudentView();
+        });
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>
