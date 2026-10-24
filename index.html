@@ -1,0 +1,2491 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة لغة الضاد - كلية التربية جامعة أسيوط</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FAF8F5;
+            --text-color: #2D2D2D;
+            --text-muted: #6E655F;
+            --primary-color: #8B5A2B;
+            --primary-hover: #6F451E;
+            --primary-soft: rgba(139, 90, 43, 0.1);
+            --secondary-color: #9C6A41;
+            --secondary-soft: rgba(156, 106, 65, 0.12);
+            --admin-green: #2E7D32;
+            --admin-green-soft: rgba(46, 125, 50, 0.12);
+            --danger-color: #D32F2F;
+            --danger-soft: rgba(211, 47, 47, 0.1);
+            --warning-color: #D97706;
+            --info-color: #0284C7;
+            --box-bg: #FFFFFF;
+            --input-bg: #FAF8F5;
+            --box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            --box-shadow-hover: 0 12px 24px rgba(139, 90, 43, 0.15);
+            --transition: all 0.3s ease;
+            --border-color: #E0E0E0;
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #F0F0F0;
+            --text-muted: #A8A096;
+            --primary-color: #D4A373;
+            --primary-hover: #E5B88B;
+            --primary-soft: rgba(212, 163, 115, 0.14);
+            --secondary-color: #E5B88B;
+            --secondary-soft: rgba(229, 184, 139, 0.15);
+            --admin-green: #4CAF50;
+            --admin-green-soft: rgba(76, 175, 80, 0.15);
+            --danger-color: #EF5350;
+            --danger-soft: rgba(239, 83, 80, 0.15);
+            --warning-color: #F59E0B;
+            --info-color: #38BDF8;
+            --box-bg: #1E1E1E;
+            --input-bg: #161616;
+            --box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+            --box-shadow-hover: 0 14px 28px rgba(0,0,0,0.65);
+            --border-color: #383838;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background-image: url('dd11.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body.dark-mode::before {
+            opacity: 0.03;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* الهيدر المتناسق والتوزيع الجديد */
+        header.site-header {
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 20;
+        }
+
+        .right-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .logo-uni {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo-uni:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-college {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+            transition: var(--transition);
+        }
+
+        .logo-user-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .logo-user {
+            height: 120px;
+            width: auto;
+            object-fit: contain;
+            transition: var(--transition);
+        }
+
+        .theme-btn, .btn {
+            background-color: var(--box-bg);
+            color: var(--text-color);
+            border: 2px solid var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .theme-btn:hover, .btn:hover, .btn.active-nav {
+            background-color: var(--primary-color);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border-color: var(--admin-green);
+            color: var(--admin-green);
+        }
+        .btn-secondary:hover {
+            background-color: var(--admin-green);
+            color: #fff;
+        }
+
+        .btn-danger-outline {
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+        }
+        .btn-danger-outline:hover {
+            background-color: var(--danger-color);
+            color: #fff;
+        }
+
+        /* شريط التنقل العلوي للأقسام */
+        .top-nav-pills {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px auto 15px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 18;
+        }
+
+        body.is-home .top-nav-pills {
+            display: none;
+        }
+
+        /* الصفحة الرئيسية */
+        main.home-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+            position: relative;
+            z-index: 15;
+        }
+
+        .welcome-text {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .main-title {
+            font-family: 'Amiri', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sections-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .section-box {
+            background-color: var(--box-bg);
+            color: var(--text-color);
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border: 2px solid transparent;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .section-box.side {
+            padding: 25px 35px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .section-box.center {
+            padding: 35px 50px;
+            font-size: 2rem;
+            font-weight: 800;
+            flex: 1.2;
+            transform: scale(1.05);
+            border-color: rgba(139, 90, 43, 0.2);
+        }
+
+        .section-box:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+
+        .section-box.center:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+
+        /* حاوية الصفحات الداخلية ولوحة التحكم */
+        .container {
+            max-width: 1140px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px 20px 50px;
+            position: relative;
+            z-index: 15;
+            flex: 1;
+        }
+
+        .page-title {
+            font-family: 'Amiri', serif;
+            font-size: 2.8rem;
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .filter-bar-box {
+            background-color: var(--box-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 16px 20px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .filter-bar-box.admin-bar {
+            justify-content: space-between;
+        }
+
+        .tabs-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background-color: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary-color);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .tab-btn.sec-active {
+            background-color: var(--admin-green);
+            border-color: var(--admin-green);
+            color: #fff;
+        }
+
+        .count-badge {
+            background: rgba(0,0,0,0.18);
+            color: inherit;
+            padding: 1px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .search-toolbar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 240px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            background-color: var(--box-bg);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 0.95rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .sort-select {
+            padding: 11px 16px;
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            background-color: var(--box-bg);
+            color: var(--text-color);
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: var(--box-shadow);
+        }
+
+        .view-toggle {
+            display: flex;
+            background-color: var(--box-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+
+        .view-toggle button {
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            padding: 10px 16px;
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .view-toggle button.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .folder-breadcrumb {
+            background-color: var(--primary-soft);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 22px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .content-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .card {
+            background-color: var(--box-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            border: 2px solid transparent;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .content-grid.list-view .card {
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary-color);
+            box-shadow: var(--box-shadow-hover);
+        }
+
+        .card-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .content-grid.list-view .card-top-bar {
+            margin-bottom: 0;
+            order: 2;
+        }
+
+        .icon-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .icon-btn {
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-family: inherit;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: scale(1.07);
+        }
+
+        .icon-btn.fav-active {
+            color: #F59E0B;
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.12);
+        }
+
+        .icon-btn.edit-btn { color: var(--admin-green); }
+        .icon-btn.move-btn { color: var(--warning-color); }
+        .icon-btn.del-btn { color: var(--danger-color); }
+
+        .card-center {
+            text-align: center;
+            margin: 6px 0 18px;
+        }
+
+        .content-grid.list-view .card-center {
+            text-align: right;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 0;
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        .card-meta {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .content-grid.list-view .card-meta {
+            justify-content: flex-start;
+        }
+
+        .meta-pill {
+            background-color: var(--primary-soft);
+            color: var(--primary-color);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .view-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            display: block;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .content-grid.list-view .view-btn {
+            width: auto;
+            min-width: 150px;
+            order: 3;
+        }
+
+        .view-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .folder-view-btn {
+            background-color: var(--secondary-color);
+        }
+        .folder-view-btn:hover {
+            opacity: 0.92;
+        }
+
+        .admin-folder-btn {
+            background-color: var(--admin-green);
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 55px 20px;
+            background-color: var(--box-bg);
+            border: 2px dashed var(--border-color);
+            border-radius: 15px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* تنسيق لوحة التحكم */
+        .admin-top-bar {
+            background-color: var(--box-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin-bottom: 26px;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .admin-welcome-box h1 {
+            font-family: 'Amiri', serif;
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 2px;
+        }
+
+        .admin-welcome-box p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .email-pill {
+            background-color: var(--admin-green-soft);
+            color: var(--admin-green);
+            border: 1px solid var(--admin-green);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.88rem;
+        }
+
+        .admin-section {
+            background-color: var(--box-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 24px;
+        }
+
+        .admin-section.danger-border {
+            border-color: rgba(211, 47, 47, 0.45);
+        }
+
+        .sec-heading {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            padding-right: 12px;
+            border-right: 4px solid var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .sec-heading.green {
+            color: var(--admin-green);
+            border-right-color: var(--admin-green);
+        }
+
+        .sec-heading.red {
+            color: var(--danger-color);
+            border-right-color: var(--danger-color);
+        }
+
+        .sec-heading.blue {
+            color: var(--info-color);
+            border-right-color: var(--info-color);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1.2fr 1.2fr 0.7fr;
+            gap: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        input[type="text"],
+        input[type="url"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.94rem;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .action-bar-btn {
+            background-color: var(--admin-green);
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .action-bar-btn:hover {
+            opacity: 0.92;
+            transform: translateY(-2px);
+        }
+
+        .action-bar-btn.brown {
+            background-color: var(--primary-color);
+        }
+
+        .action-bar-btn.red {
+            background-color: var(--danger-color);
+        }
+
+        .activity-list {
+            max-height: 270px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-left: 4px;
+        }
+
+        .activity-item {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-right: 4px solid var(--admin-green);
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-user {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--admin-green);
+        }
+
+        .activity-text {
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        .activity-time {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .admin-user-row {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* النوافذ المنبثقة */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(3px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9000;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background-color: var(--box-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 16px;
+            padding: 28px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: var(--box-shadow-hover);
+            position: relative;
+        }
+
+        .modal-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 18px;
+            font-size: 1.35rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        footer.site-footer {
+            text-align: center;
+            padding: 18px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+            position: relative;
+            z-index: 15;
+        }
+
+        body.is-home footer.site-footer {
+            display: none;
+        }
+
+        .page-view {
+            display: none;
+        }
+        .page-view.active-view {
+            display: block;
+        }
+        main.home-main.active-view {
+            display: flex;
+        }
+
+        @media (max-width: 820px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+
+        /* ======= تعديلات الموبايل الاحترافية ======= */
+        @media (max-width: 768px) {
+            header.site-header {
+                padding: 15px;
+                flex-wrap: wrap; /* السماح بالتفاف العناصر */
+                justify-content: space-between;
+            }
+            .right-section {
+                flex: unset;
+            }
+            .left-section {
+                flex: unset;
+                gap: 10px;
+            }
+            .logo-uni {
+                height: 50px; /* تصغير متناسق */
+            }
+            .logo-college {
+                height: 50px;
+            }
+            .logo-user-container {
+                order: 3; /* نقل شعار المنصة للأسفل */
+                width: 100%;
+                margin-top: 15px;
+            }
+            .logo-user {
+                height: 75px; 
+            }
+            .theme-btn, .btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            .top-nav-pills {
+                margin: 10px auto;
+                gap: 6px;
+                padding: 0 10px;
+            }
+            main.home-main {
+                margin-top: 15px;
+                padding: 15px;
+            }
+            .welcome-text {
+                font-size: 1.3rem;
+            }
+            .main-title {
+                font-size: 2.8rem;
+                margin-bottom: 30px;
+            }
+            /* تعديل المربعات لتكون احترافية وغير متكدسة */
+            .sections-container {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: center;
+            }
+            .section-box.side,
+            .section-box.center {
+                width: auto;
+                max-width: none;
+                flex: 1 1 45%; /* تظهر بجوار بعضها */
+                padding: 15px 10px;
+                font-size: 1.15rem;
+                transform: none; /* إيقاف التكبير الذي يشوه الموبايل */
+            }
+            .section-box.center {
+                flex: 1 1 100%; /* تأخذ العرض بالكامل */
+                padding: 20px 15px;
+                font-size: 1.35rem;
+                order: -1; /* جعل المقررات في الأعلى لأهميتها */
+            }
+            .section-box.center:hover {
+                transform: none;
+            }
+            .container {
+                padding: 10px 15px 30px;
+            }
+            .page-title {
+                font-size: 1.9rem;
+                margin-bottom: 15px;
+            }
+            /* تنسيق شبكة الكروت لتلائم الهواتف */
+            .content-grid {
+                grid-template-columns: 1fr; /* كارت واحد بعرض الشاشة */
+                gap: 12px;
+            }
+            .card {
+                padding: 15px;
+            }
+            .card-title {
+                font-size: 1.15rem;
+            }
+        }
+    </style>
+    <!-- Firebase SDK (Compat v10.12.2 for Realtime Database & Cloud Firestore) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+</head>
+<body class="is-home">
+
+    <!-- الهيدر الموحد -->
+    <header class="site-header">
+        <div class="right-section">
+            <img src="una11.png" id="uniLogoImg" alt="شعار جامعة أسيوط" class="logo-uni" onclick="onUniLogoClick()" title="جامعة أسيوط - لوحة التحكم">
+        </div>
+
+        <div class="logo-user-container" onclick="navigateTo('home')" title="العودة للرئيسية - منصة لغة الضاد">
+            <img src="lord11.png" id="platformCenterLogo" alt="شعار علي جلال" class="logo-user">
+        </div>
+
+        <div class="left-section">
+            <img src="edu11.png" id="collegeLogoImg" alt="شعار كلية التربية" class="logo-college" title="كلية التربية - جامعة أسيوط">
+            <button type="button" id="themeToggleBtn" class="theme-btn">الوضع الداكن</button>
+        </div>
+    </header>
+
+    <!-- شريط التنقل الموحد -->
+    <nav class="top-nav-pills" id="topNavPills" aria-label="التنقل الرئيسي">
+        <button type="button" onclick="navigateTo('home')" class="btn" id="navHomeBtn">الرئيسية</button>
+        <button type="button" onclick="navigateTo('courses')" class="btn" id="navCoursesBtn">المقررات</button>
+        <button type="button" onclick="navigateTo('summaries')" class="btn" id="navSummariesBtn">الملخصات</button>
+        <button type="button" onclick="navigateTo('exercises')" class="btn" id="navExercisesBtn">التدريبات</button>
+        <button type="button" onclick="navigateTo('admin')" class="btn" id="navAdminBtn" style="display:none;">لوحة التحكم</button>
+    </nav>
+
+    <!-- ١. الصفحة الرئيسية -->
+    <main id="homeView" class="home-main page-view active-view">
+        <p class="welcome-text">أهلاً بك في منصة</p>
+        <h1 class="main-title">لغة الضاد</h1>
+
+        <div class="sections-container">
+            <a href="javascript:void(0)" onclick="navigateTo('summaries')" class="section-box side">الملخصات</a>
+            <a href="javascript:void(0)" onclick="navigateTo('courses')" class="section-box center">المقررات</a>
+            <a href="javascript:void(0)" onclick="navigateTo('exercises')" class="section-box side">التدريبات</a>
+        </div>
+    </main>
+
+    <!-- ٢. صفحات الأقسام -->
+    <div id="catalogView" class="container page-view">
+        <h1 class="page-title" id="catalogPageTitle">المقررات الدراسية</h1>
+
+        <div class="filter-bar-box">
+            <div class="tabs-group">
+                <button type="button" class="tab-btn active" id="term1Btn" onclick="setTerm('الترم الأول')">الترم الأول</button>
+                <button type="button" class="tab-btn" id="term2Btn" onclick="setTerm('الترم الثاني')">الترم الثاني</button>
+            </div>
+        </div>
+
+        <div class="search-toolbar">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="ابحث عن اسم المقرر أو المحاضرة..." oninput="renderSectionContent()">
+            </div>
+
+            <div class="view-toggle">
+                <button type="button" id="gridViewBtn" class="active" onclick="setViewMode('grid')">شبكة</button>
+                <button type="button" id="listViewBtn" onclick="setViewMode('list')">قائمة</button>
+            </div>
+        </div>
+
+        <div class="folder-breadcrumb" id="folderBreadcrumb">
+            <div>
+                <span style="font-weight:800; color:var(--primary-color);">المجلد المفتوح: </span>
+                <span id="activeFolderTitle" style="font-weight:700;"></span>
+            </div>
+            <button type="button" class="btn btn-danger-outline" onclick="closeFolderView()">← العودة للقائمة الرئيسية</button>
+        </div>
+
+        <div class="content-grid" id="mainContentGrid"></div>
+    </div>
+
+    <!-- ٣. لوحة التحكم -->
+    <div id="adminView" class="container page-view">
+        <div class="admin-top-bar">
+            <div class="admin-welcome-box">
+                <h1>لوحة تحكم المسؤول</h1>
+                <p id="adminWelcomeSubtitle">أهلاً بك يا مالك الأكاديمية العظيم</p>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <span class="email-pill" id="firebaseStatusBadge" style="background-color: var(--primary-soft); color: var(--primary-color); border-color: var(--primary-color);">⏳ جاري الاتصال بـ Firebase...</span>
+                <button type="button" onclick="restoreDefaultContent()" class="btn btn-secondary">استعادة كافة المقررات والتلخيصات والتدريبات</button>
+                <span class="email-pill" id="linkedEmailBadge">ail112glal@gmail.com</span>
+                <button type="button" onclick="handleAdminLogout()" class="btn btn-danger-outline">تسجيل خروج</button>
+            </div>
+        </div>
+
+        <!-- شعار المنصة -->
+        <div class="admin-section">
+            <div class="sec-heading">
+                <span>شعار المنصة (اللوجو)</span>
+                <span style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">يظهر في الشريط العلوي والهيدر في كل الصفحات</span>
+            </div>
+            <div class="grid-2" style="align-items: end;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label>اختيار صورة اللوجو من جهازك / هاتفك:</label>
+                    <input type="file" id="logoFileInput" accept="image/*" onchange="handleLogoFileUpload(event)">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label>أو لصق رابط مباشر لصورة اللوجو:</label>
+                    <input type="url" id="logoUrlInput" placeholder="https://example.com/logo.png">
+                </div>
+            </div>
+            <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+                <button type="button" onclick="saveLogoSetting()" class="action-bar-btn" style="flex: 1; min-width: 160px;">حفظ اللوجو</button>
+                <button type="button" onclick="clearLogoSetting()" class="btn btn-danger-outline" style="padding: 12px 24px; border-radius: 10px;">حذف اللوجو</button>
+            </div>
+        </div>
+
+        <!-- ربط الحساب بالبريد الإلكتروني -->
+        <div class="admin-section">
+            <div class="sec-heading">
+                <span>ربط الحساب بالبريد الإلكتروني واستعادة كلمة المرور</span>
+                <span style="font-size: 0.84rem; color: var(--admin-green);" id="emailLinkedNote">الحساب مرتبط بـ ail112glal@gmail.com</span>
+            </div>
+            <div class="grid-3" style="align-items: center;">
+                <input type="email" id="recoveryEmailInput" value="ail112glal@gmail.com" placeholder="البريد الإلكتروني">
+                <input type="password" id="currentAdminPassInput" value="admin" placeholder="كلمة المرور">
+                <button type="button" onclick="saveEmailBinding()" class="action-bar-btn">حفظ وربط البريد الإلكتروني</button>
+            </div>
+        </div>
+
+        <!-- إنشاء مجلد جديد + إضافة ملف -->
+        <div class="grid-2">
+            <div class="admin-section" style="margin-bottom:0;">
+                <div class="sec-heading green">
+                    <span>إنشاء مجلد جديد</span>
+                </div>
+                <form id="createFolderForm" onsubmit="handleCreateFolder(event)">
+                    <div class="form-group">
+                        <input type="text" id="newFolderName" placeholder="اسم المجلد (مثال: محاضرات الأدب)" required>
+                    </div>
+                    <div class="grid-3" style="margin-bottom: 14px;">
+                        <select id="newFolderTerm" required>
+                            <option value="الترم الأول">الترم الأول</option>
+                            <option value="الترم الثاني">الترم الثاني</option>
+                        </select>
+                        <select id="newFolderSection" required>
+                            <option value="المقررات">مقرر (قسم المقررات)</option>
+                            <option value="الملخصات">ملخص (قسم الملخصات)</option>
+                            <option value="التدريبات">تدريب (قسم التدريبات)</option>
+                        </select>
+                        <input type="number" id="newFolderOrder" value="0" min="0" title="ترتيب الظهور">
+                    </div>
+                    <button type="submit" class="action-bar-btn">إنشاء المجلد</button>
+                </form>
+            </div>
+
+            <div class="admin-section" style="margin-bottom:0;">
+                <div class="sec-heading green">
+                    <span>إضافة ملف جديد (تحميل مباشر)</span>
+                </div>
+                <form id="createFileForm" onsubmit="handleCreateFile(event)">
+                    <div class="grid-2" style="gap: 10px; margin-bottom: 12px;">
+                        <input type="text" id="newFileName" placeholder="اسم الملف أو المقرر" required>
+                        <input type="url" id="newFileLink" placeholder="رابط Google Drive أو رابط مباشر" required>
+                    </div>
+                    <div class="grid-2" style="gap: 10px; margin-bottom: 12px;">
+                        <select id="newFileFolderSelect">
+                            <option value="الرئيسية">بالخارج — رئيسية</option>
+                        </select>
+                        <input type="number" id="newFileOrder" value="0" min="0" title="ترتيب الظهور">
+                    </div>
+                    <div class="grid-3" style="gap: 10px; margin-bottom: 14px;">
+                        <select id="newFileTerm" onchange="populateFolderDropdown()" required>
+                            <option value="الترم الأول">الترم الأول</option>
+                            <option value="الترم الثاني">الترم الثاني</option>
+                        </select>
+                        <select id="newFileSection" onchange="populateFolderDropdown()" required>
+                            <option value="المقررات">قسم المقررات</option>
+                            <option value="الملخصات">قسم الملخصات</option>
+                            <option value="التدريبات">قسم التدريبات</option>
+                        </select>
+                        <select id="newFileType">
+                            <option value="PDF">PDF</option>
+                            <option value="فيديو">فيديو</option>
+                            <option value="رابط خارجي">رابط خارجي</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="action-bar-btn">نشر الملف الآن</button>
+                </form>
+            </div>
+        </div>
+
+        <div style="height: 24px;"></div>
+
+        <div class="grid-2">
+            <div class="admin-section" style="margin-bottom:0;">
+                <div class="sec-heading blue">
+                    <span>سجل النشاطات المباشر</span>
+                </div>
+                <div class="activity-list" id="activityLogContainer"></div>
+            </div>
+
+            <div class="admin-section danger-border" style="margin-bottom:0;">
+                <div class="sec-heading red">
+                    <span>إدارة حسابات المسؤولين</span>
+                </div>
+                <div class="grid-2" style="gap: 10px; margin-bottom: 10px;">
+                    <input type="text" id="mgrUsername" placeholder="اسم المستخدم">
+                    <input type="email" id="mgrEmail" placeholder="البريد الإلكتروني">
+                </div>
+                <div class="grid-2" style="gap: 10px; margin-bottom: 12px;">
+                    <input type="password" id="mgrPassword" placeholder="كلمة المرور">
+                    <input type="text" id="mgrWelcome" placeholder="رسالة الترحيب">
+                </div>
+                <button type="button" onclick="handleSaveAdminAccount()" class="action-bar-btn red">+ إضافة / تحديث مسؤول</button>
+                <div id="adminAccountsList" style="margin-top: 12px;"></div>
+            </div>
+        </div>
+
+        <div style="height: 28px;"></div>
+
+        <div class="filter-bar-box admin-bar">
+            <div class="tabs-group">
+                <button type="button" class="tab-btn active" id="admTerm1Btn" onclick="setAdminTerm('الترم الأول')">الترم الأول</button>
+                <button type="button" class="tab-btn" id="admTerm2Btn" onclick="setAdminTerm('الترم الثاني')">الترم الثاني</button>
+            </div>
+
+            <div class="tabs-group">
+                <button type="button" class="tab-btn sec-active" id="admSecCourses" onclick="setAdminSection('المقررات')">المقررات</button>
+                <button type="button" class="tab-btn" id="admSecSummaries" onclick="setAdminSection('الملخصات')">التلخيصات</button>
+                <button type="button" class="tab-btn" id="admSecExercises" onclick="setAdminSection('التدريبات')">التدريبات</button>
+                <button type="button" class="tab-btn" id="admSecFavs" onclick="setAdminSection('المفضلة')">المفضلة <span class="count-badge" id="admFavCountBadge">0</span></button>
+            </div>
+        </div>
+
+        <div class="search-toolbar">
+            <div class="search-box">
+                <input type="text" id="admSearchInput" placeholder="ابحث في لوحة التحكم..." oninput="renderAdminCatalog()">
+            </div>
+            <select id="admSortSelect" class="sort-select" onchange="renderAdminCatalog()">
+                <option value="order">الترتيب الافتراضي</option>
+                <option value="newest">الأحدث إضافة</option>
+                <option value="alpha">الترتيب الأبجدي</option>
+            </select>
+            <div class="view-toggle">
+                <button type="button" id="admGridBtn" class="active" onclick="setAdminView('grid')">شبكة</button>
+                <button type="button" id="admListBtn" onclick="setAdminView('list')">قائمة</button>
+            </div>
+        </div>
+
+        <div class="folder-breadcrumb" id="admFolderBreadcrumb">
+            <div>
+                <span style="font-weight:800; color:var(--primary-color);">داخل مجلد: </span>
+                <span id="admCurrentFolderTitle" style="font-weight:700;"></span>
+            </div>
+            <button type="button" class="btn btn-danger-outline" onclick="closeAdminFolder()">← العودة للخارج</button>
+        </div>
+
+        <div class="content-grid" id="adminCatalogGrid"></div>
+    </div>
+
+    <!-- نافذة تسجيل دخول المسؤول -->
+    <div id="loginModal" class="modal-backdrop">
+        <div class="modal-card">
+            <h3>تسجيل الدخول إلى لوحة التحكم</h3>
+            <form id="adminLoginForm" onsubmit="handleAdminLoginSubmit(event)">
+                <div class="form-group">
+                    <label for="loginUsernameInput">اسم المستخدم</label>
+                    <input type="text" id="loginUsernameInput" placeholder="أدخل اسم المستخدم" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="loginPasswordInput">كلمة المرور</label>
+                    <input type="password" id="loginPasswordInput" placeholder="أدخل كلمة المرور" required autocomplete="current-password">
+                </div>
+                <p id="loginErrorMsg" style="color:var(--danger-color); font-size:0.88rem; font-weight:700; margin-bottom:12px; display:none;"></p>
+                <div style="display:flex; gap:10px; margin-top:16px;">
+                    <button type="submit" class="action-bar-btn">تسجيل الدخول</button>
+                    <button type="button" onclick="closeLoginModal()" class="btn">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل عنصر -->
+    <div id="editModal" class="modal-backdrop">
+        <div class="modal-card">
+            <h3 id="editModalTitle">تعديل العنصر</h3>
+            <input type="hidden" id="editItemId">
+            <input type="hidden" id="editItemKind">
+            <div class="form-group">
+                <label>الاسم</label>
+                <input type="text" id="editItemName">
+            </div>
+            <div class="form-group" id="editLinkGroup">
+                <label>الرابط</label>
+                <input type="url" id="editItemLink">
+            </div>
+            <div class="grid-2" style="gap: 10px;">
+                <div class="form-group">
+                    <label>القسم</label>
+                    <select id="editItemSection">
+                        <option value="المقررات">المقررات</option>
+                        <option value="الملخصات">الملخصات</option>
+                        <option value="التدريبات">التدريبات</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>الترم</label>
+                    <select id="editItemTerm">
+                        <option value="الترم الأول">الترم الأول</option>
+                        <option value="الترم الثاني">الترم الثاني</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>ترتيب الظهور</label>
+                <input type="number" id="editItemOrder" value="0">
+            </div>
+            <div style="display:flex; gap:10px; margin-top:16px;">
+                <button type="button" onclick="saveEditedItem()" class="action-bar-btn">حفظ التعديلات</button>
+                <button type="button" onclick="closeEditModal()" class="btn">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة نقل ملف -->
+    <div id="moveModal" class="modal-backdrop">
+        <div class="modal-card">
+            <h3>نقل الملف إلى مجلد</h3>
+            <input type="hidden" id="moveFileId">
+            <div class="form-group">
+                <label>اختر الوجهة</label>
+                <select id="moveTargetFolderSelect"></select>
+            </div>
+            <div style="display:flex; gap:10px; margin-top:16px;">
+                <button type="button" onclick="confirmMoveFile()" class="action-bar-btn brown">نقل الآن</button>
+                <button type="button" onclick="closeMoveModal()" class="btn">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer" id="siteFooter">
+        منصة لغة الضاد التعليمية — كلية التربية، جامعة أسيوط
+    </footer>
+
+    <script>
+        const STORAGE_KEYS = {
+            FOLDERS: 'lughat_folders_v3',
+            FILES: 'lughat_files_v3',
+            SETTINGS: 'lughat_settings_v3',
+            FAVS: 'lughat_favs_v3',
+            LOGS: 'lughat_logs_v3',
+            ADMINS: 'lughat_admins_v3',
+            SESSION: 'lughat_admin_session_v3'
+        };
+
+        const DEFAULT_FOLDERS = [
+            { id: 'fld_1', name: 'محاضرات النحو والصرف', section: 'المقررات', term: 'الترم الأول', order: 1, createdAt: 1730000100000 },
+            { id: 'fld_2', name: 'محاضرات الأدب العربي والبلاغة', section: 'المقررات', term: 'الترم الأول', order: 2, createdAt: 1730000200000 },
+            { id: 'fld_3', name: 'محاضرات فقه اللغة والصوتيات', section: 'المقررات', term: 'الترم الثاني', order: 1, createdAt: 1730000300000 },
+            { id: 'fld_4', name: 'مراجعات ليلة الامتحان الشاملة', section: 'الملخصات', term: 'الترم الأول', order: 1, createdAt: 1730000400000 },
+            { id: 'fld_5', name: 'ملخصات القواعد البلاغية والعروض', section: 'الملخصات', term: 'الترم الثاني', order: 1, createdAt: 1730000500000 },
+            { id: 'fld_6', name: 'بنك أسئلة النحو التطبيقي', section: 'التدريبات', term: 'الترم الأول', order: 1, createdAt: 1730000600000 },
+            { id: 'fld_7', name: 'اختبارات الأعوام السابقة (تربية أسيوط)', section: 'التدريبات', term: 'الترم الثاني', order: 1, createdAt: 1730000700000 }
+        ];
+
+        const DEFAULT_FILES = [
+            { id: 'fil_1', name: 'كتاب النحو الوافي - باب المبتدأ والخبر وتطبيقاته', link: 'https://drive.google.com/', section: 'المقررات', term: 'الترم الأول', folder: 'محاضرات النحو والصرف', type: 'PDF', order: 1, createdAt: 1730001100000 },
+            { id: 'fil_2', name: 'شرح كان وأخواتها وإن وأخواتها بالتفصيل', link: 'https://drive.google.com/', section: 'المقررات', term: 'الترم الأول', folder: 'محاضرات النحو والصرف', type: 'فيديو', order: 2, createdAt: 1730001200000 },
+            { id: 'fil_3', name: 'تاريخ الأدب الجاهلي وخصائص القصيدة العربية', link: 'https://drive.google.com/', section: 'المقررات', term: 'الترم الأول', folder: 'محاضرات الأدب العربي والبلاغة', type: 'PDF', order: 1, createdAt: 1730001300000 },
+            { id: 'fil_4', name: 'مقرر علم البيان والبديع - كلية التربية جامعة أسيوط', link: 'https://drive.google.com/', section: 'المقررات', term: 'الترم الأول', folder: 'الرئيسية', type: 'PDF', order: 1, createdAt: 1730001400000 },
+            { id: 'fil_5', name: 'مدخل إلى علم العروض والقافية وأوزان الشعر', link: 'https://drive.google.com/', section: 'المقررات', term: 'الترم الأول', folder: 'الرئيسية', type: 'فيديو', order: 2, createdAt: 1730001500000 },
+            { id: 'fil_6', name: 'فقه اللغة العربية وخصائص الأصوات والمعاجم', link: 'https://drive.google.com/', section: 'المقررات', term: 'الترم الثاني', folder: 'محاضرات فقه اللغة والصوتيات', type: 'PDF', order: 1, createdAt: 1730001600000 },
+            { id: 'fil_7', name: 'الأدب الإسلامي والأموي - تحليل نصوص مختارة', link: 'https://drive.google.com/', section: 'المقررات', term: 'الترم الثاني', folder: 'الرئيسية', type: 'PDF', order: 1, createdAt: 1730001700000 },
+            { id: 'fil_8', name: 'المنصوبات والمجرورات في النحو العربي', link: 'https://drive.google.com/', section: 'المقررات', term: 'الترم الثاني', folder: 'الرئيسية', type: 'فيديو', order: 2, createdAt: 1730001800000 },
+
+            { id: 'fil_9', name: 'ملخص خرائط ذهنية لجميع أبواب النحو (الترم الأول)', link: 'https://drive.google.com/', section: 'الملخصات', term: 'الترم الأول', folder: 'مراجعات ليلة الامتحان الشاملة', type: 'PDF', order: 1, createdAt: 1730002100000 },
+            { id: 'fil_10', name: 'الخلاصة الذهبية في البلاغة وعلم البيان', link: 'https://drive.google.com/', section: 'الملخصات', term: 'الترم الأول', folder: 'مراجعات ليلة الامتحان الشاملة', type: 'PDF', order: 2, createdAt: 1730002200000 },
+            { id: 'fil_11', name: 'ملخص مدارس الأدب العربي والشواهد الشعرية المقررة', link: 'https://drive.google.com/', section: 'الملخصات', term: 'الترم الأول', folder: 'الرئيسية', type: 'PDF', order: 1, createdAt: 1730002300000 },
+            { id: 'fil_12', name: 'جداول تصريف الأفعال والأوزان الصرفية القياسية', link: 'https://drive.google.com/', section: 'الملخصات', term: 'الترم الأول', folder: 'الرئيسية', type: 'PDF', order: 2, createdAt: 1730002400000 },
+            { id: 'fil_13', name: 'ملخص بحور الشعر الستة عشر ومفاتيحها التفعيلية', link: 'https://drive.google.com/', section: 'الملخصات', term: 'الترم الثاني', folder: 'ملخصات القواعد البلاغية والعروض', type: 'PDF', order: 1, createdAt: 1730002500000 },
+            { id: 'fil_14', name: 'مذكرة المراجعة النهائية في فقه اللغة وعلم الدلالة', link: 'https://drive.google.com/', section: 'الملخصات', term: 'الترم الثاني', folder: 'الرئيسية', type: 'PDF', order: 1, createdAt: 1730002600000 },
+
+            { id: 'fil_15', name: '١٠٠ سؤال اختيار من متعدد وإعراب تطبيقي على النواسخ', link: 'https://drive.google.com/', section: 'التدريبات', term: 'الترم الأول', folder: 'بنك أسئلة النحو التطبيقي', type: 'PDF', order: 1, createdAt: 1730003100000 },
+            { id: 'fil_16', name: 'تدريبات إعراب أبيات شعرية من المعلقات السبع مع الحل', link: 'https://drive.google.com/', section: 'التدريبات', term: 'الترم الأول', folder: 'بنك أسئلة النحو التطبيقي', type: 'PDF', order: 2, createdAt: 1730003200000 },
+            { id: 'fil_17', name: 'اختبار تفاعلي شامل في الصور البيانية والمحسنات البديعية', link: 'https://drive.google.com/', section: 'التدريبات', term: 'الترم الأول', folder: 'الرئيسية', type: 'رابط خارجي', order: 1, createdAt: 1730003300000 },
+            { id: 'fil_18', name: 'تدريبات التقطيع العروضي واستخراج البحور الشعرية', link: 'https://drive.google.com/', section: 'التدريبات', term: 'الترم الأول', folder: 'الرئيسية', type: 'PDF', order: 2, createdAt: 1730003400000 },
+            { id: 'fil_19', name: 'نماذج امتحانات كلية التربية جامعة أسيوط المجابة', link: 'https://drive.google.com/', section: 'التدريبات', term: 'الترم الثاني', folder: 'اختبارات الأعوام السابقة (تربية أسيوط)', type: 'PDF', order: 1, createdAt: 1730003500000 },
+            { id: 'fil_20', name: 'تطبيقات عملية شاملة على المنصوبات والتوابع النحوية', link: 'https://drive.google.com/', section: 'التدريبات', term: 'الترم الثاني', folder: 'الرئيسية', type: 'PDF', order: 1, createdAt: 1730003600000 }
+        ];
+
+        const DEFAULT_SETTINGS = { logoUrl: '', adminEmail: 'ail112glal@gmail.com', welcomeSubtitle: 'أهلاً بك يا مالك الأكاديمية العظيم' };
+        const DEFAULT_ADMINS = [{ username: 'LoRD112', email: 'ail112glal@gmail.com', password: 'admin', welcome: 'أهلاً بك يا مالك الأكاديمية العظيم' }];
+        const DEFAULT_LOGS = [{ id: 'lg_1', user: 'LoRD112', action: 'تجهيز المنصة التعليمية', time: 'الآن' }];
+
+        // إعدادات وبيانات الربط بقاعدة بيانات Firebase
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyAdJns-ljAhh4kuW1Fa9H5MZ7nPD7PvOuE",
+            authDomain: "lord-a6165.firebaseapp.com",
+            projectId: "lord-a6165",
+            storageBucket: "lord-a6165.firebasestorage.app",
+            messagingSenderId: "1011007184593",
+            appId: "1:1011007184593:web:cdedfa3b544e268ea6aff0",
+            measurementId: "G-9HPTVV2LJ0",
+            databaseURL: "https://lord-a6165-default-rtdb.europe-west1.firebasedatabase.app/"
+        };
+
+        // ذاكرة حية متزامنة لحظياً مع Firebase لضمان سرعة التصفح وعدم تعطل أي دالة
+        const memoryStore = {};
+        let firestoreDb = null;
+        let realtimeDb = null;
+        let isApplyingRemoteUpdate = false;
+        let firebaseConnected = false;
+
+        function updateFirebaseStatusUI(connected, modeText) {
+            firebaseConnected = connected;
+            const badge = document.getElementById('firebaseStatusBadge');
+            if (!badge) return;
+            if (connected) {
+                badge.textContent = '🟢 متصل بقاعدة بيانات Firebase (' + (modeText || 'تزامن مباشر') + ')';
+                badge.style.backgroundColor = 'var(--admin-green-soft)';
+                badge.style.color = 'var(--admin-green)';
+                badge.style.borderColor = 'var(--admin-green)';
+            } else {
+                badge.textContent = '🟠 وضع التزامن المحلي المؤقت (تأكد من تفعيل القواعد في Firebase)';
+                badge.style.backgroundColor = 'var(--primary-soft)';
+                badge.style.color = 'var(--warning-color)';
+                badge.style.borderColor = 'var(--warning-color)';
+            }
+        }
+
+        function safeGet(key, fallback) {
+            if (Object.prototype.hasOwnProperty.call(memoryStore, key) && memoryStore[key] !== undefined && memoryStore[key] !== null) {
+                return JSON.parse(JSON.stringify(memoryStore[key]));
+            }
+            try {
+                const raw = localStorage.getItem(key);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    memoryStore[key] = parsed;
+                    return JSON.parse(JSON.stringify(parsed));
+                }
+            } catch (e) {}
+            return fallback !== null && fallback !== undefined ? JSON.parse(JSON.stringify(fallback)) : fallback;
+        }
+
+        function safeSet(key, val, skipCloudSync) {
+            const cleanVal = val !== undefined ? JSON.parse(JSON.stringify(val)) : null;
+            memoryStore[key] = cleanVal;
+            try {
+                localStorage.setItem(key, JSON.stringify(cleanVal));
+            } catch (e) {}
+
+            if (!skipCloudSync && !isApplyingRemoteUpdate && key !== STORAGE_KEYS.SESSION) {
+                pushKeyToFirebase(key, cleanVal);
+            }
+        }
+
+        function normalizeSection(sec) { return (sec === 'التلخيصات' || sec === 'الملخصات') ? 'الملخصات' : sec; }
+
+        function refreshAllActiveViews() {
+            try { applySharedHeaderAndTheme(); } catch (e) {}
+            try { renderSectionContent(); } catch (e) {}
+            try {
+                const adminViewEl = document.getElementById('adminView');
+                if (adminViewEl && adminViewEl.classList.contains('active-view')) {
+                    populateFolderDropdown();
+                    renderActivityLog();
+                    renderAdminAccountsList();
+                    renderAdminCatalog();
+                }
+            } catch (e) {}
+        }
+
+        async function pushKeyToFirebase(key, val) {
+            const payload = { value: val, updatedAt: Date.now() };
+            // 1. الحفظ في Cloud Firestore
+            if (firestoreDb) {
+                try {
+                    await firestoreDb.collection('lughat_platform').doc(key).set(payload);
+                    updateFirebaseStatusUI(true, 'Firestore');
+                } catch (err) {
+                    console.warn('Firestore write warning for ' + key + ':', err);
+                }
+            }
+            // 2. الحفظ في Realtime Database كنسخة احتياطية وتزامن مزدوج
+            if (realtimeDb) {
+                try {
+                    await realtimeDb.ref('lughat_platform/' + key).set(payload);
+                    if (!firebaseConnected) updateFirebaseStatusUI(true, 'Realtime DB');
+                } catch (err) {
+                    console.warn('Realtime DB write warning for ' + key + ':', err);
+                }
+            }
+        }
+
+        function applyIncomingCloudData(key, remoteVal, sourceName) {
+            if (remoteVal === undefined || remoteVal === null) return;
+            const currentRaw = JSON.stringify(memoryStore[key]);
+            const incomingRaw = JSON.stringify(remoteVal);
+            if (currentRaw === incomingRaw) {
+                updateFirebaseStatusUI(true, sourceName);
+                return;
+            }
+            isApplyingRemoteUpdate = true;
+            safeSet(key, remoteVal, true);
+            isApplyingRemoteUpdate = false;
+            updateFirebaseStatusUI(true, sourceName);
+            refreshAllActiveViews();
+        }
+
+        function initFirebaseConnection() {
+            const syncedKeys = [
+                { key: STORAGE_KEYS.FOLDERS, def: DEFAULT_FOLDERS },
+                { key: STORAGE_KEYS.FILES, def: DEFAULT_FILES },
+                { key: STORAGE_KEYS.SETTINGS, def: DEFAULT_SETTINGS },
+                { key: STORAGE_KEYS.FAVS, def: ['fil_1', 'fil_4', 'fil_9'] },
+                { key: STORAGE_KEYS.LOGS, def: DEFAULT_LOGS },
+                { key: STORAGE_KEYS.ADMINS, def: DEFAULT_ADMINS }
+            ];
+
+            // تهيئة القيم المبدئية محلياً أولاً حتى تعمل المنصة فوراً دون انتظار
+            syncedKeys.forEach(item => {
+                const existing = safeGet(item.key, null);
+                if (existing === null || existing === undefined) {
+                    safeSet(item.key, item.def, true);
+                } else {
+                    memoryStore[item.key] = existing;
+                }
+            });
+
+            if (typeof firebase === 'undefined') {
+                console.warn('Firebase SDK not loaded yet.');
+                updateFirebaseStatusUI(false);
+                return;
+            }
+
+            try {
+                const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
+
+                // إعداد Cloud Firestore مع الاستماع اللحظي (onSnapshot)
+                if (typeof firebase.firestore === 'function') {
+                    try {
+                        firestoreDb = firebase.firestore(app);
+                        syncedKeys.forEach(item => {
+                            const docRef = firestoreDb.collection('lughat_platform').doc(item.key);
+                            docRef.onSnapshot(docSnap => {
+                                if (docSnap.exists) {
+                                    const data = docSnap.data();
+                                    if (data && Object.prototype.hasOwnProperty.call(data, 'value')) {
+                                        applyIncomingCloudData(item.key, data.value, 'Firestore');
+                                    }
+                                } else {
+                                    // إذا كانت قاعدة البيانات فارغة لأول مرة، نرفع البيانات الحالية إليها تلقائياً
+                                    const initialVal = safeGet(item.key, item.def);
+                                    docRef.set({ value: initialVal, updatedAt: Date.now() }).then(() => {
+                                        updateFirebaseStatusUI(true, 'Firestore');
+                                    }).catch(() => {});
+                                }
+                            }, err => {
+                                console.warn('Firestore listener notice (' + item.key + '):', err.message || err);
+                            });
+                        });
+                    } catch (fsErr) {
+                        console.warn('Firestore init error:', fsErr);
+                    }
+                }
+
+                // إعداد Realtime Database مع الاستماع اللحظي (on('value')) لدعم الحالتين تلقائياً
+                if (typeof firebase.database === 'function') {
+                    try {
+                        realtimeDb = firebase.database(app);
+                        syncedKeys.forEach(item => {
+                            const dbRef = realtimeDb.ref('lughat_platform/' + item.key);
+                            dbRef.on('value', snapshot => {
+                                if (snapshot.exists()) {
+                                    const data = snapshot.val();
+                                    const val = (data && Object.prototype.hasOwnProperty.call(data, 'value')) ? data.value : data;
+                                    // في حالة المصفوفات الفارغة في RTDB (حيث يحذف RTDB المصفوفات الفارغة أحياناً)
+                                    const normalizedVal = (val === null || val === undefined) ? (Array.isArray(item.def) ? [] : item.def) : val;
+                                    applyIncomingCloudData(item.key, normalizedVal, 'Realtime DB');
+                                } else {
+                                    const initialVal = safeGet(item.key, item.def);
+                                    dbRef.set({ value: initialVal, updatedAt: Date.now() }).then(() => {
+                                        updateFirebaseStatusUI(true, 'Realtime DB');
+                                    }).catch(() => {});
+                                }
+                            }, err => {
+                                console.warn('Realtime DB listener notice (' + item.key + '):', err.message || err);
+                            });
+                        });
+                    } catch (rtErr) {
+                        console.warn('Realtime DB init error:', rtErr);
+                    }
+                }
+            } catch (initErr) {
+                console.error('Firebase initialization error:', initErr);
+                updateFirebaseStatusUI(false);
+            }
+        }
+
+        initFirebaseConnection();
+
+        let currentSection = 'المقررات';
+        let currentTerm = 'الترم الأول';
+        let currentFolder = 'الرئيسية';
+        let viewMode = 'grid';
+        let currentAdminUser = null;
+
+        let admTerm = 'الترم الأول';
+        let admSection = 'المقررات';
+        let admFolder = 'الرئيسية';
+        let admViewMode = 'grid';
+
+        window.addActivityLog = function(actionText) {
+            const logs = safeGet(STORAGE_KEYS.LOGS, DEFAULT_LOGS);
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+            logs.unshift({
+                id: 'lg_' + Date.now(),
+                user: currentAdminUser || 'LoRD112',
+                action: actionText,
+                time: timeStr
+            });
+            if (logs.length > 50) logs.length = 50;
+            safeSet(STORAGE_KEYS.LOGS, logs);
+            renderActivityLog();
+        };
+
+        window.renderActivityLog = function() {
+            const container = document.getElementById('activityLogContainer');
+            if (!container) return;
+            const logs = safeGet(STORAGE_KEYS.LOGS, DEFAULT_LOGS);
+            container.innerHTML = '';
+            if (logs.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">لا توجد نشاطات مسجلة بعد.</div>';
+                return;
+            }
+            logs.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'activity-item';
+                row.innerHTML = `
+                    <div>
+                        <div class="activity-user">${item.user}</div>
+                        <div class="activity-text">${item.action}</div>
+                    </div>
+                    <div class="activity-time">${item.time}</div>
+                `;
+                container.appendChild(row);
+            });
+        };
+
+        window.showToast = function(message, isError = false) {
+            const msg = document.createElement('div');
+            msg.style.cssText = `position:fixed; top:20px; left:20px; background:${isError ? 'var(--danger-color)' : 'var(--admin-green)'}; color:white; padding:13px 22px; border-radius:12px; z-index:9999; font-weight:700; font-family:'Cairo',sans-serif;`;
+            msg.innerText = message;
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 2500);
+        };
+
+        window.showConfirm = function(title, onConfirm) {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-backdrop';
+            overlay.style.display = 'flex';
+            overlay.innerHTML = `
+                <div class="modal-card" style="text-align:center;">
+                    <h3>تأكيد الإجراء</h3>
+                    <p style="margin-bottom:24px; font-weight:600;">${title}</p>
+                    <div style="display:flex; justify-content:center; gap:12px;">
+                        <button type="button" id="confirmYesBtn" class="btn btn-danger-outline" style="background:var(--danger-color); color:#fff;">نعم، متأكد</button>
+                        <button type="button" id="confirmNoBtn" class="btn">إلغاء</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            overlay.querySelector('#confirmYesBtn').onclick = () => { overlay.remove(); onConfirm(); };
+            overlay.querySelector('#confirmNoBtn').onclick = () => overlay.remove();
+        };
+
+        window.navigateTo = function(page) {
+            if (page === 'admin' && !currentAdminUser) {
+                openLoginModal();
+                return;
+            }
+
+            document.body.classList.toggle('is-home', page === 'home');
+            document.getElementById('homeView').classList.toggle('active-view', page === 'home');
+            document.getElementById('catalogView').classList.toggle('active-view', ['courses', 'summaries', 'exercises'].includes(page));
+            document.getElementById('adminView').classList.toggle('active-view', page === 'admin');
+
+            document.getElementById('navHomeBtn').classList.toggle('active-nav', page === 'home');
+            document.getElementById('navCoursesBtn').classList.toggle('active-nav', page === 'courses');
+            document.getElementById('navSummariesBtn').classList.toggle('active-nav', page === 'summaries');
+            document.getElementById('navExercisesBtn').classList.toggle('active-nav', page === 'exercises');
+
+            const navAdminBtn = document.getElementById('navAdminBtn');
+            navAdminBtn.style.display = currentAdminUser ? 'inline-flex' : 'none';
+            navAdminBtn.classList.toggle('active-nav', page === 'admin');
+
+            if (page === 'courses') {
+                currentSection = 'المقررات';
+                currentFolder = 'الرئيسية';
+                document.getElementById('catalogPageTitle').textContent = 'المقررات الدراسية';
+                document.getElementById('searchInput').placeholder = 'ابحث عن اسم المقرر أو المحاضرة...';
+                renderSectionContent();
+            } else if (page === 'summaries') {
+                currentSection = 'الملخصات';
+                currentFolder = 'الرئيسية';
+                document.getElementById('catalogPageTitle').textContent = 'الملخصات والمراجعات';
+                document.getElementById('searchInput').placeholder = 'ابحث عن اسم الملخص أو المذكرة...';
+                renderSectionContent();
+            } else if (page === 'exercises') {
+                currentSection = 'التدريبات';
+                currentFolder = 'الرئيسية';
+                document.getElementById('catalogPageTitle').textContent = 'التدريبات والاختبارات';
+                document.getElementById('searchInput').placeholder = 'ابحث عن اسم التدريب أو الاختبار...';
+                renderSectionContent();
+            } else if (page === 'admin') {
+                initDashboardUI();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.openLoginModal = function() {
+            const modal = document.getElementById('loginModal');
+            const errEl = document.getElementById('loginErrorMsg');
+            const userInp = document.getElementById('loginUsernameInput');
+            const passInp = document.getElementById('loginPasswordInput');
+            if (errEl) errEl.style.display = 'none';
+            if (userInp) userInp.value = '';
+            if (passInp) passInp.value = '';
+            if (modal) {
+                modal.style.display = 'flex';
+                setTimeout(() => { if (userInp) userInp.focus(); }, 50);
+            }
+        };
+
+        window.closeLoginModal = function() {
+            const modal = document.getElementById('loginModal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.handleAdminLoginSubmit = function(e) {
+            e.preventDefault();
+            const username = (document.getElementById('loginUsernameInput').value || '').trim();
+            const password = (document.getElementById('loginPasswordInput').value || '').trim();
+            const errEl = document.getElementById('loginErrorMsg');
+
+            const admins = safeGet(STORAGE_KEYS.ADMINS, DEFAULT_ADMINS);
+            const matched = admins.find(a =>
+                (a.username.toLowerCase() === username.toLowerCase() ||
+                 (a.email && a.email.toLowerCase() === username.toLowerCase()) ||
+                 (username.toLowerCase() === 'admin' && a.username === 'LoRD112')) &&
+                a.password === password
+            );
+
+            if (!matched) {
+                if (errEl) {
+                    errEl.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة';
+                    errEl.style.display = 'block';
+                }
+                showToast('بيانات الدخول غير صحيحة', true);
+                return;
+            }
+
+            currentAdminUser = matched.username;
+            const welcomeEl = document.getElementById('adminWelcomeSubtitle');
+            if (welcomeEl && matched.welcome) {
+                welcomeEl.textContent = matched.welcome;
+            }
+            closeLoginModal();
+            addActivityLog('تسجيل دخول إلى لوحة التحكم');
+            navigateTo('admin');
+            showToast('مرحباً بك في لوحة التحكم');
+        };
+
+        // النقر على لوجو جامعة أسيوط يظهر نافذة تسجيل الدخول باسم المستخدم وكلمة المرور
+        window.onUniLogoClick = function() {
+            openLoginModal();
+        };
+
+        window.setTerm = function(term) {
+            currentTerm = term;
+            currentFolder = 'الرئيسية';
+            document.getElementById('term1Btn').classList.toggle('active', term === 'الترم الأول');
+            document.getElementById('term2Btn').classList.toggle('active', term === 'الترم الثاني');
+            renderSectionContent();
+        };
+
+        window.setViewMode = function(mode) {
+            viewMode = mode;
+            document.getElementById('mainContentGrid').classList.toggle('list-view', mode === 'list');
+            document.getElementById('gridViewBtn').classList.toggle('active', mode === 'grid');
+            document.getElementById('listViewBtn').classList.toggle('active', mode === 'list');
+        };
+
+        window.openFolderView = function(folderName) {
+            currentFolder = folderName;
+            renderSectionContent();
+        };
+
+        window.closeFolderView = function() {
+            currentFolder = 'الرئيسية';
+            renderSectionContent();
+        };
+
+        window.copyItemLink = function(link, name) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(link).then(() => showToast(`تم نسخ رابط "${name}"`)).catch(() => fallbackCopy(link, name));
+            } else {
+                fallbackCopy(link, name);
+            }
+        };
+
+        function fallbackCopy(link, name) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = link;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+                showToast(`تم نسخ رابط "${name}"`);
+            } catch (e) {
+                showToast(`الرابط: ${link}`);
+            }
+        }
+
+        function sortItems(items, mode) {
+            const copy = items.slice();
+            if (mode === 'newest') {
+                copy.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            } else if (mode === 'alpha') {
+                copy.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ar'));
+            } else {
+                copy.sort((a, b) => ((a.order || 0) - (b.order || 0)) || ((a.createdAt || 0) - (b.createdAt || 0)));
+            }
+            return copy;
+        }
+
+        window.renderSectionContent = function() {
+            const allFolders = safeGet(STORAGE_KEYS.FOLDERS, DEFAULT_FOLDERS);
+            const allFiles = safeGet(STORAGE_KEYS.FILES, DEFAULT_FILES);
+            const query = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+
+            const breadcrumb = document.getElementById('folderBreadcrumb');
+            if (currentFolder !== 'الرئيسية') {
+                breadcrumb.style.display = 'flex';
+                document.getElementById('activeFolderTitle').textContent = currentFolder;
+            } else {
+                breadcrumb.style.display = 'none';
+            }
+
+            const grid = document.getElementById('mainContentGrid');
+            grid.innerHTML = '';
+
+            let foldersToShow = [];
+            let filesToShow = [];
+
+            if (currentFolder !== 'الرئيسية') {
+                filesToShow = allFiles.filter(f => normalizeSection(f.section) === currentSection && f.term === currentTerm && f.folder === currentFolder && (!query || f.name.toLowerCase().includes(query)));
+            } else {
+                foldersToShow = allFolders.filter(f => normalizeSection(f.section) === currentSection && f.term === currentTerm && (!query || f.name.toLowerCase().includes(query)));
+                filesToShow = allFiles.filter(f => normalizeSection(f.section) === currentSection && f.term === currentTerm && (query ? f.name.toLowerCase().includes(query) : (!f.folder || f.folder === 'الرئيسية')));
+            }
+
+            foldersToShow = sortItems(foldersToShow, 'order');
+            filesToShow = sortItems(filesToShow, 'order');
+
+            if (foldersToShow.length === 0 && filesToShow.length === 0) {
+                grid.innerHTML = `<div class="empty-state">لا توجد عناصر مطابقة في ${currentTerm} حالياً.</div>`;
+                return;
+            }
+
+            foldersToShow.forEach(folder => {
+                const insideCount = allFiles.filter(f => normalizeSection(f.section) === currentSection && f.term === currentTerm && f.folder === folder.name).length;
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-top-bar">
+                        <span class="meta-pill">مجلد</span>
+                        <span class="meta-pill">${insideCount} ملفات</span>
+                    </div>
+                    <div class="card-center">
+                        <div>
+                            <div class="card-title">${folder.name}</div>
+                            <div class="card-meta"><span>${folder.term}</span></div>
+                        </div>
+                    </div>
+                    <button type="button" class="view-btn folder-view-btn">فتح المجلد</button>
+                `;
+                card.querySelector('button').onclick = () => openFolderView(folder.name);
+                grid.appendChild(card);
+            });
+
+            filesToShow.forEach(file => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-top-bar">
+                        <div class="icon-actions">
+                            <button type="button" class="icon-btn" data-copy>نسخ الرابط</button>
+                        </div>
+                        <span class="meta-pill">${file.type || 'PDF'}</span>
+                    </div>
+                    <div class="card-center">
+                        <div>
+                            <div class="card-title">${file.name}</div>
+                            <div class="card-meta"><span>${file.term}</span></div>
+                        </div>
+                    </div>
+                    <a href="${file.link}" target="_blank" rel="noopener noreferrer" class="view-btn">عرض الملف</a>
+                `;
+                card.querySelector('[data-copy]').onclick = () => copyItemLink(file.link, file.name);
+                grid.appendChild(card);
+            });
+        };
+
+        // دوال لوحة التحكم
+        window.handleAdminLogout = function() {
+            addActivityLog('تسجيل الخروج من لوحة التحكم');
+            currentAdminUser = null;
+            const navAdminBtn = document.getElementById('navAdminBtn');
+            if (navAdminBtn) navAdminBtn.style.display = 'none';
+            navigateTo('home');
+            showToast('تم تسجيل الخروج بنجاح');
+        };
+
+        window.restoreDefaultContent = function() {
+            showConfirm('هل تريد استعادة كافة المقررات والملخصات والتدريبات؟', () => {
+                safeSet(STORAGE_KEYS.FOLDERS, DEFAULT_FOLDERS);
+                safeSet(STORAGE_KEYS.FILES, DEFAULT_FILES);
+                addActivityLog('استعادة كافة المقررات والملخصات والتدريبات الافتراضية');
+                populateFolderDropdown();
+                renderAdminCatalog();
+                showToast('تمت استعادة البيانات بنجاح');
+            });
+        };
+
+        window.handleLogoFileUpload = function(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('logoUrlInput').value = e.target.result;
+                showToast('تم تجهيز الشعار، اضغط حفظ');
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.saveLogoSetting = function() {
+            const url = (document.getElementById('logoUrlInput').value || '').trim();
+            const settings = safeGet(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+            settings.logoUrl = url;
+            safeSet(STORAGE_KEYS.SETTINGS, settings);
+            applySharedHeaderAndTheme();
+            addActivityLog('تحديث شعار المنصة');
+            showToast('تم حفظ الشعار وتطبيقه بنجاح');
+        };
+
+        window.clearLogoSetting = function() {
+            const settings = safeGet(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+            settings.logoUrl = '';
+            safeSet(STORAGE_KEYS.SETTINGS, settings);
+            document.getElementById('logoUrlInput').value = '';
+            const userLogoEl = document.getElementById('platformCenterLogo');
+            if (userLogoEl) userLogoEl.src = 'lord11.png';
+            applySharedHeaderAndTheme();
+            addActivityLog('استعادة الشعار الأصلي للمنصة');
+            showToast('تمت استعادة الشعار الأصلي');
+        };
+
+        window.saveEmailBinding = function() {
+            const email = (document.getElementById('recoveryEmailInput').value || '').trim();
+            const newPass = (document.getElementById('currentAdminPassInput').value || '').trim();
+            if (!email) {
+                showToast('يرجى إدخال البريد الإلكتروني', true);
+                return;
+            }
+            const settings = safeGet(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+            settings.adminEmail = email;
+            safeSet(STORAGE_KEYS.SETTINGS, settings);
+
+            const admins = safeGet(STORAGE_KEYS.ADMINS, DEFAULT_ADMINS);
+            const activeAdm = admins.find(a => a.username === (currentAdminUser || 'LoRD112')) || admins[0];
+            if (activeAdm) {
+                activeAdm.email = email;
+                if (newPass) activeAdm.password = newPass;
+                safeSet(STORAGE_KEYS.ADMINS, admins);
+            }
+
+            document.getElementById('linkedEmailBadge').textContent = email;
+            const noteEl = document.getElementById('emailLinkedNote');
+            if (noteEl) noteEl.textContent = 'الحساب مرتبط بـ ' + email;
+            renderAdminAccountsList();
+            addActivityLog('تحديث ربط البريد الإلكتروني وكلمة المرور');
+            showToast('تم حفظ وربط البريد الإلكتروني بنجاح');
+        };
+
+        window.populateFolderDropdown = function() {
+            const term = document.getElementById('newFileTerm').value;
+            const section = normalizeSection(document.getElementById('newFileSection').value);
+            const select = document.getElementById('newFileFolderSelect');
+            const folders = safeGet(STORAGE_KEYS.FOLDERS, DEFAULT_FOLDERS);
+
+            select.innerHTML = `<option value="الرئيسية">بالخارج — رئيسية (${term})</option>`;
+            folders.filter(f => normalizeSection(f.section) === section && f.term === term).forEach(f => {
+                const opt = document.createElement('option');
+                opt.value = f.name;
+                opt.textContent = `داخل مجلد: ${f.name}`;
+                select.appendChild(opt);
+            });
+        };
+
+        window.handleCreateFolder = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('newFolderName').value.trim();
+            const term = document.getElementById('newFolderTerm').value;
+            const section = normalizeSection(document.getElementById('newFolderSection').value);
+            const order = parseInt(document.getElementById('newFolderOrder').value, 10) || 0;
+            if (!name) return;
+            const folders = safeGet(STORAGE_KEYS.FOLDERS, DEFAULT_FOLDERS);
+            folders.push({ id: 'fld_' + Date.now(), name, term, section, order, createdAt: Date.now() });
+            safeSet(STORAGE_KEYS.FOLDERS, folders);
+            e.target.reset();
+            document.getElementById('newFolderOrder').value = '0';
+            populateFolderDropdown();
+            renderAdminCatalog();
+            addActivityLog(`إنشاء مجلد جديد: ${name}`);
+            showToast('تم إنشاء المجلد بنجاح');
+        };
+
+        window.handleCreateFile = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('newFileName').value.trim();
+            const link = document.getElementById('newFileLink').value.trim();
+            const folder = document.getElementById('newFileFolderSelect').value;
+            const term = document.getElementById('newFileTerm').value;
+            const section = normalizeSection(document.getElementById('newFileSection').value);
+            const type = document.getElementById('newFileType').value;
+            const order = parseInt(document.getElementById('newFileOrder').value, 10) || 0;
+            if (!name || !link) return;
+            const files = safeGet(STORAGE_KEYS.FILES, DEFAULT_FILES);
+            files.push({ id: 'fil_' + Date.now(), name, link, folder, term, section, type, order, createdAt: Date.now() });
+            safeSet(STORAGE_KEYS.FILES, files);
+            e.target.reset();
+            document.getElementById('newFileOrder').value = '0';
+            populateFolderDropdown();
+            renderAdminCatalog();
+            addActivityLog(`إضافة ملف جديد: ${name}`);
+            showToast('تم نشر الملف بنجاح');
+        };
+
+        window.renderAdminAccountsList = function() {
+            const listEl = document.getElementById('adminAccountsList');
+            if (!listEl) return;
+            const admins = safeGet(STORAGE_KEYS.ADMINS, DEFAULT_ADMINS);
+            listEl.innerHTML = '';
+            admins.forEach(adm => {
+                const row = document.createElement('div');
+                row.className = 'admin-user-row';
+                row.innerHTML = `
+                    <div>
+                        <strong style="color:var(--primary-color);">${adm.username}</strong>
+                        <span style="font-size:0.82rem; color:var(--text-muted); margin-right:8px;">(${adm.email || 'بدون بريد'})</span>
+                    </div>
+                    <div class="icon-actions">
+                        <button type="button" class="icon-btn edit-btn" data-select-adm>تحديد للتعديل</button>
+                        <button type="button" class="icon-btn del-btn" data-del-adm>حذف</button>
+                    </div>
+                `;
+                row.querySelector('[data-select-adm]').onclick = () => {
+                    document.getElementById('mgrUsername').value = adm.username || '';
+                    document.getElementById('mgrEmail').value = adm.email || '';
+                    document.getElementById('mgrPassword').value = adm.password || '';
+                    document.getElementById('mgrWelcome').value = adm.welcome || '';
+                };
+                row.querySelector('[data-del-adm]').onclick = () => {
+                    if (admins.length <= 1) {
+                        showToast('لا يمكن حذف الحساب الوحيد للمسؤول', true);
+                        return;
+                    }
+                    showConfirm(`هل تريد حذف حساب المسؤول "${adm.username}"؟`, () => {
+                        const updated = admins.filter(a => a.username !== adm.username);
+                        safeSet(STORAGE_KEYS.ADMINS, updated);
+                        renderAdminAccountsList();
+                        addActivityLog(`حذف حساب مسؤول: ${adm.username}`);
+                        showToast('تم حذف حساب المسؤول');
+                    });
+                };
+                listEl.appendChild(row);
+            });
+        };
+
+        window.handleSaveAdminAccount = function() {
+            const username = (document.getElementById('mgrUsername').value || '').trim();
+            const email = (document.getElementById('mgrEmail').value || '').trim();
+            const password = (document.getElementById('mgrPassword').value || '').trim();
+            const welcome = (document.getElementById('mgrWelcome').value || '').trim() || 'أهلاً بك يا مالك الأكاديمية العظيم';
+
+            if (!username || !password) {
+                showToast('يرجى إدخال اسم المستخدم وكلمة المرور', true);
+                return;
+            }
+
+            const admins = safeGet(STORAGE_KEYS.ADMINS, DEFAULT_ADMINS);
+            const existing = admins.find(a => a.username.toLowerCase() === username.toLowerCase());
+            if (existing) {
+                existing.username = username;
+                if (email) existing.email = email;
+                existing.password = password;
+                existing.welcome = welcome;
+            } else {
+                admins.push({ username, email: email || 'ail112glal@gmail.com', password, welcome });
+            }
+            safeSet(STORAGE_KEYS.ADMINS, admins);
+
+            if (currentAdminUser && currentAdminUser.toLowerCase() === username.toLowerCase()) {
+                document.getElementById('adminWelcomeSubtitle').textContent = welcome;
+            }
+
+            document.getElementById('mgrUsername').value = '';
+            document.getElementById('mgrEmail').value = '';
+            document.getElementById('mgrPassword').value = '';
+            document.getElementById('mgrWelcome').value = '';
+
+            renderAdminAccountsList();
+            addActivityLog(`حفظ/تحديث حساب مسؤول: ${username}`);
+            showToast('تم حفظ حساب المسؤول بنجاح');
+        };
+
+        window.setAdminTerm = function(term) {
+            admTerm = term;
+            admFolder = 'الرئيسية';
+            document.getElementById('admTerm1Btn').classList.toggle('active', term === 'الترم الأول');
+            document.getElementById('admTerm2Btn').classList.toggle('active', term === 'الترم الثاني');
+            renderAdminCatalog();
+        };
+
+        window.setAdminSection = function(sec) {
+            admSection = sec;
+            admFolder = 'الرئيسية';
+            document.getElementById('admSecCourses').classList.toggle('sec-active', sec === 'المقررات');
+            document.getElementById('admSecSummaries').classList.toggle('sec-active', sec === 'الملخصات');
+            document.getElementById('admSecExercises').classList.toggle('sec-active', sec === 'التدريبات');
+            document.getElementById('admSecFavs').classList.toggle('sec-active', sec === 'المفضلة');
+            renderAdminCatalog();
+        };
+
+        window.setAdminView = function(mode) {
+            admViewMode = mode;
+            document.getElementById('adminCatalogGrid').classList.toggle('list-view', mode === 'list');
+            document.getElementById('admGridBtn').classList.toggle('active', mode === 'grid');
+            document.getElementById('admListBtn').classList.toggle('active', mode === 'list');
+        };
+
+        window.openAdminFolder = function(folderName) {
+            admFolder = folderName;
+            renderAdminCatalog();
+        };
+
+        window.closeAdminFolder = function() {
+            admFolder = 'الرئيسية';
+            renderAdminCatalog();
+        };
+
+        window.openEditModal = function(kind, id) {
+            const folders = safeGet(STORAGE_KEYS.FOLDERS, DEFAULT_FOLDERS);
+            const files = safeGet(STORAGE_KEYS.FILES, DEFAULT_FILES);
+            const item = kind === 'folder' ? folders.find(f => f.id === id) : files.find(f => f.id === id);
+            if (!item) return;
+
+            document.getElementById('editItemKind').value = kind;
+            document.getElementById('editItemId').value = id;
+            document.getElementById('editItemName').value = item.name;
+            document.getElementById('editItemSection').value = normalizeSection(item.section);
+            document.getElementById('editItemTerm').value = item.term;
+            document.getElementById('editItemOrder').value = item.order || 0;
+
+            const linkGroup = document.getElementById('editLinkGroup');
+            if (kind === 'file') {
+                linkGroup.style.display = 'block';
+                document.getElementById('editItemLink').value = item.link || '';
+            } else {
+                linkGroup.style.display = 'none';
+            }
+            document.getElementById('editModal').style.display = 'flex';
+        };
+
+        window.closeEditModal = function() { document.getElementById('editModal').style.display = 'none'; };
+
+        window.saveEditedItem = function() {
+            const kind = document.getElementById('editItemKind').value;
+            const id = document.getElementById('editItemId').value;
+            const name = document.getElementById('editItemName').value.trim();
+            const newSec = normalizeSection(document.getElementById('editItemSection').value);
+            const newTerm = document.getElementById('editItemTerm').value;
+            const newOrder = parseInt(document.getElementById('editItemOrder').value, 10) || 0;
+            if (!name) return;
+
+            if (kind === 'folder') {
+                const folders = safeGet(STORAGE_KEYS.FOLDERS, DEFAULT_FOLDERS);
+                const folder = folders.find(f => f.id === id);
+                if (folder) {
+                    const oldName = folder.name;
+                    const oldSec = normalizeSection(folder.section);
+                    const oldTerm = folder.term;
+                    folder.name = name;
+                    folder.section = newSec;
+                    folder.term = newTerm;
+                    folder.order = newOrder;
+                    safeSet(STORAGE_KEYS.FOLDERS, folders);
+
+                    const files = safeGet(STORAGE_KEYS.FILES, DEFAULT_FILES);
+                    files.forEach(fl => {
+                        if (fl.folder === oldName && normalizeSection(fl.section) === oldSec && fl.term === oldTerm) {
+                            fl.folder = name;
+                            fl.section = newSec;
+                            fl.term = newTerm;
+                        }
+                    });
+                    safeSet(STORAGE_KEYS.FILES, files);
+                    if (admFolder === oldName) admFolder = name;
+                }
+            } else {
+                const files = safeGet(STORAGE_KEYS.FILES, DEFAULT_FILES);
+                const file = files.find(f => f.id === id);
+                if (file) {
+                    file.name = name;
+                    file.link = document.getElementById('editItemLink').value.trim();
+                    file.section = newSec;
+                    file.term = newTerm;
+                    file.order = newOrder;
+                    safeSet(STORAGE_KEYS.FILES, files);
+                }
+            }
+            closeEditModal();
+            populateFolderDropdown();
+            renderAdminCatalog();
+            addActivityLog(`تعديل عنصر: ${name}`);
+            showToast('تم التعديل بنجاح');
+        };
+
+        window.openMoveModal = function(fileId) {
+            document.getElementById('moveFileId').value = fileId;
+            const select = document.getElementById('moveTargetFolderSelect');
+            select.innerHTML = '<option value="الرئيسية">بالخارج — القائمة الرئيسية</option>';
+            const folders = safeGet(STORAGE_KEYS.FOLDERS, DEFAULT_FOLDERS);
+            folders.forEach(fl => {
+                const opt = document.createElement('option');
+                opt.value = fl.name;
+                opt.textContent = `مجلد: ${fl.name} (${fl.section} - ${fl.term})`;
+                select.appendChild(opt);
+            });
+            document.getElementById('moveModal').style.display = 'flex';
+        };
+
+        window.closeMoveModal = function() { document.getElementById('moveModal').style.display = 'none'; };
+
+        window.confirmMoveFile = function() {
+            const fileId = document.getElementById('moveFileId').value;
+            const targetFolder = document.getElementById('moveTargetFolderSelect').value;
+            const files = safeGet(STORAGE_KEYS.FILES, DEFAULT_FILES);
+            const folders = safeGet(STORAGE_KEYS.FOLDERS, DEFAULT_FOLDERS);
+            const file = files.find(f => f.id === fileId);
+            if (file) {
+                file.folder = targetFolder;
+                if (targetFolder !== 'الرئيسية') {
+                    const matchedFolder = folders.find(fl => fl.name === targetFolder);
+                    if (matchedFolder) {
+                        file.section = normalizeSection(matchedFolder.section);
+                        file.term = matchedFolder.term;
+                    }
+                }
+                safeSet(STORAGE_KEYS.FILES, files);
+                renderAdminCatalog();
+                addActivityLog(`نقل ملف "${file.name}" إلى ${targetFolder}`);
+                showToast('تم النقل بنجاح');
+            }
+            closeMoveModal();
+        };
+
+        window.deleteCatalogItem = function(kind, id) {
+            showConfirm('هل أنت متأكد من الحذف؟', () => {
+                if (kind === 'folder') {
+                    const folders = safeGet(STORAGE_KEYS.FOLDERS, DEFAULT_FOLDERS);
+                    const target = folders.find(f => f.id === id);
+                    safeSet(STORAGE_KEYS.FOLDERS, folders.filter(f => f.id !== id));
+                    if (target) {
+                        const files = safeGet(STORAGE_KEYS.FILES, DEFAULT_FILES);
+                        files.forEach(fl => {
+                            if (fl.folder === target.name) fl.folder = 'الرئيسية';
+                        });
+                        safeSet(STORAGE_KEYS.FILES, files);
+                        addActivityLog(`حذف مجلد: ${target.name}`);
+                    }
+                } else {
+                    const files = safeGet(STORAGE_KEYS.FILES, DEFAULT_FILES);
+                    const target = files.find(f => f.id === id);
+                    safeSet(STORAGE_KEYS.FILES, files.filter(f => f.id !== id));
+                    if (target) addActivityLog(`حذف ملف: ${target.name}`);
+                }
+                populateFolderDropdown();
+                renderAdminCatalog();
+                showToast('تم الحذف بنجاح');
+            });
+        };
+
+        window.toggleAdminFav = function(fileId) {
+            let favs = safeGet(STORAGE_KEYS.FAVS, []);
+            if (favs.includes(fileId)) favs = favs.filter(id => id !== fileId);
+            else favs.push(fileId);
+            safeSet(STORAGE_KEYS.FAVS, favs);
+            renderAdminCatalog();
+        };
+
+        window.renderAdminCatalog = function() {
+            const allFolders = safeGet(STORAGE_KEYS.FOLDERS, DEFAULT_FOLDERS);
+            const allFiles = safeGet(STORAGE_KEYS.FILES, DEFAULT_FILES);
+            const favs = safeGet(STORAGE_KEYS.FAVS, []);
+            const query = (document.getElementById('admSearchInput').value || '').trim().toLowerCase();
+            const sortMode = (document.getElementById('admSortSelect') && document.getElementById('admSortSelect').value) || 'order';
+
+            document.getElementById('admFavCountBadge').textContent = favs.length;
+
+            const breadcrumb = document.getElementById('admFolderBreadcrumb');
+            if (admFolder !== 'الرئيسية') {
+                breadcrumb.style.display = 'flex';
+                document.getElementById('admCurrentFolderTitle').textContent = admFolder;
+            } else {
+                breadcrumb.style.display = 'none';
+            }
+
+            let foldersToShow = [];
+            let filesToShow = [];
+
+            if (admSection === 'المفضلة') {
+                filesToShow = allFiles.filter(f => f.term === admTerm && favs.includes(f.id) && (!query || f.name.toLowerCase().includes(query)));
+            } else if (admFolder !== 'الرئيسية') {
+                filesToShow = allFiles.filter(f => normalizeSection(f.section) === admSection && f.term === admTerm && f.folder === admFolder && (!query || f.name.toLowerCase().includes(query)));
+            } else {
+                foldersToShow = allFolders.filter(f => normalizeSection(f.section) === admSection && f.term === admTerm && (!query || f.name.toLowerCase().includes(query)));
+                filesToShow = allFiles.filter(f => normalizeSection(f.section) === admSection && f.term === admTerm && (query ? f.name.toLowerCase().includes(query) : (!f.folder || f.folder === 'الرئيسية')));
+            }
+
+            foldersToShow = sortItems(foldersToShow, sortMode);
+            filesToShow = sortItems(filesToShow, sortMode);
+
+            const grid = document.getElementById('adminCatalogGrid');
+            grid.innerHTML = '';
+
+            if (foldersToShow.length === 0 && filesToShow.length === 0) {
+                grid.innerHTML = '<div class="empty-state">لا توجد عناصر مطابقة.</div>';
+                return;
+            }
+
+            foldersToShow.forEach(folder => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-top-bar">
+                        <span class="meta-pill">مجلد</span>
+                        <div class="icon-actions">
+                            <button type="button" class="icon-btn edit-btn" data-edit>تعديل</button>
+                            <button type="button" class="icon-btn del-btn" data-del>حذف</button>
+                        </div>
+                    </div>
+                    <div class="card-center">
+                        <div>
+                            <div class="card-title">${folder.name}</div>
+                            <div class="card-meta"><span>${folder.term}</span></div>
+                        </div>
+                    </div>
+                    <button type="button" class="view-btn admin-folder-btn" data-open>فتح المجلد</button>
+                `;
+                card.querySelector('[data-edit]').onclick = () => openEditModal('folder', folder.id);
+                card.querySelector('[data-del]').onclick = () => deleteCatalogItem('folder', folder.id);
+                card.querySelector('[data-open]').onclick = () => openAdminFolder(folder.name);
+                grid.appendChild(card);
+            });
+
+            filesToShow.forEach(file => {
+                const isFav = favs.includes(file.id);
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-top-bar">
+                        <div class="icon-actions">
+                            <button type="button" class="icon-btn ${isFav ? 'fav-active' : ''}" data-fav>${isFav ? 'مفضلة' : 'إضافة مفضلة'}</button>
+                        </div>
+                        <div class="icon-actions">
+                            <button type="button" class="icon-btn edit-btn" data-edit>تعديل</button>
+                            <button type="button" class="icon-btn move-btn" data-move>نقل</button>
+                            <button type="button" class="icon-btn del-btn" data-del>حذف</button>
+                        </div>
+                    </div>
+                    <div class="card-center">
+                        <div>
+                            <div class="card-title">${file.name}</div>
+                            <div class="card-meta"><span>${file.term}</span></div>
+                        </div>
+                    </div>
+                    <a href="${file.link}" target="_blank" rel="noopener noreferrer" class="view-btn">عرض الملف</a>
+                `;
+                card.querySelector('[data-fav]').onclick = () => toggleAdminFav(file.id);
+                card.querySelector('[data-edit]').onclick = () => openEditModal('file', file.id);
+                card.querySelector('[data-move]').onclick = () => openMoveModal(file.id);
+                card.querySelector('[data-del]').onclick = () => deleteCatalogItem('file', file.id);
+                grid.appendChild(card);
+            });
+        };
+
+        function initDashboardUI() {
+            populateFolderDropdown();
+            renderActivityLog();
+            renderAdminAccountsList();
+            renderAdminCatalog();
+        }
+
+        function applySharedHeaderAndTheme() {
+            const body = document.body;
+            const themeBtn = document.getElementById('themeToggleBtn');
+            let savedTheme = 'light';
+            try { savedTheme = localStorage.getItem('theme') || 'light'; } catch(e) {}
+
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                if (themeBtn) themeBtn.textContent = 'الوضع الفاتح';
+            } else {
+                body.classList.remove('dark-mode');
+                if (themeBtn) themeBtn.textContent = 'الوضع الداكن';
+            }
+
+            if (themeBtn) {
+                themeBtn.onclick = () => {
+                    body.classList.toggle('dark-mode');
+                    const isDark = body.classList.contains('dark-mode');
+                    try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch(e) {}
+                    themeBtn.textContent = isDark ? 'الوضع الفاتح' : 'الوضع الداكن';
+                };
+            }
+
+            const settings = safeGet(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+            const userLogoEl = document.getElementById('platformCenterLogo');
+            if (userLogoEl && settings && settings.logoUrl) {
+                userLogoEl.src = settings.logoUrl;
+            }
+        }
+
+        applySharedHeaderAndTheme();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
